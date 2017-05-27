@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>贪玩游戏令牌</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<style type="text/css">
+audio,body,button,code,dd,div,dl,dt,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,img,input,li,mark,menu,nav,ol,p,section,select,summary,td,textarea,th,time,ul,video{margin:0;padding:0}
+body,div,fieldset,form,h1,h2,h3,h4,h5,h6,html,p{-webkit-text-size-adjust:none}
+img{vertical-align:middle;border:0;-webkit-tap-highlight-color:transparent}
+em,i{font-weight:400;font-style:normal}
+body{color:#9c9c9c;font:16px/1.5 XinGothic-SinaWeibo,'Microsoft Yahei',helvetica,arial;background-color:#333}
+a{text-decoration:none;color:#6c6c6c}
+.sprite{background:url(img/sprite_1.png?_t=20150911) no-repeat}
+.container,.screen-wrap{position:absolute;left:0;top:0;width:100%;height:100%}
+.arrows-tip{background-position:-103px -439px;width:35px;height:30px;-webkit-animation:tip 2.5s linear 0s infinite;animation:tip 2.5s linear 0s infinite}
+.arrows-tip-blk{transform:scale(.7);-webkit-transform:scale(.7);position:absolute;top:91%;left:50%;margin-left:-17px;width:35px;height:30px}
+.arrows-tip-blk-1 .arrows-tip{background-position:-188px -433px}
+.arrows-tip-blk-2 .arrows-tip{background-position:-108px -498px}
+.arrows-tip-blk-3{display:none}
+@-webkit-keyframes tip{0%{transform:translate(0,0);-webkit-transform:translate(0,0)}50%{transform:translate(0,30px);-webkit-transform:translate(0,30px)}}
+@keyframes tip{0%{transform:translate(0,0);-webkit-transform:translate(0,0)}50%{transform:translate(0,30px);-webkit-transform:translate(0,30px)}}
+.screen-wrap-min{transform:scale(.95);-webkit-transform:scale(.95);opacity:.7;transition:all .2s linear;-webkit-transition:all .2s linear}
+.screen-wrap-min .sprite{transform:scale(0);-webkit-transform:scale(0);transition:all .2s linear;-webkit-transition:all .2s linear}
+.screen-wrap-up{-webkit-animation:wrapUp .4s linear 0s;animation:wrapUp .4s linear 0s}
+.screen-wrap-down{-webkit-animation:wrapDown .4s linear 0s;animation:wrapDown .4s linear 0s}
+@-webkit-keyframes wrapUp{0%{transform:translateY(100%);-webkit-transform:translateY(100%)}}
+@keyframes wrapUp{0%{transform:translateY(100%);-webkit-transform:translateY(100%)}}
+@-webkit-keyframes wrapDown{0%{transform:translateY(-100%);-webkit-transform:translateY(-100%)}}
+@keyframes wrapDown{0%{transform:translateY(-100%);-webkit-transform:translateY(-100%)}}
+.screen-wrap-down .sprite,.screen-wrap-up .sprite{-webkit-animation:scaleSpr .5s linear 0s;animation:scaleSpr .5s linear 0s;transform:scale(1);-webkit-transform:scale(1)}
+@-webkit-keyframes scaleSpr{0%{transform:scale(0);-webkit-transform:scale(0)}}
+@keyframes scaleSpr{0%{transform:scale(0);-webkit-transform:scale(0)}}
+.screen{width:100%;height:100%;overflow:hidden;position:absolute;display:none}
+.wrap-div-blk div{position:absolute;left:50%}
+.wrap-div-blk{position:absolute;left:0;top:0;width:100%;height:100%;transform:scale(.5);-webkit-transform:scale(.5);transform-origin:50% 30%;-webkit-transform-origin:50% 30%}
+@media screen and (max-width:320px){.wrap-div-blk div.s1_img,.wrap-div-blk div.s2_img,.wrap-div-blk div.s3_img{-webkit-transform:scale(.8);transform:scale(.8)}}
+.screen0{background:#fff;display:block}
+.s0_logo,.s0_name{top:10%}
+.s0_btn,.s0_text{top:85%}
+.s0_logo{background-position:-35px -136px;width:204px;height:204px;margin-left:-102px}
+.s0_name{background-position:-35px -38px;width:273px;height:37px;margin-left:-136px;margin-top:240px}
+.s0_btn{width:414px;height:80px;margin-left:-207px}
+.s0_btn a{position:absolute;border:1px solid #55bc61;border-radius:6px;text-align:center;line-height:78px;height:78px;width:412px;font-size:36px;background-color:#55bc61;color:#fff}
+.s0_btn_none.s0_btn a{border-color:#c4c4c4;background-color:#c4c4c4;color:#fff;cursor:default}
+.s0_btn_none i{display:none}
+.s0_btn a:active{background-color:#fff;color:#55bc61}
+.s0_btn_none.s0_btn a:active{background-color:#c4c4c4;color:#fff}
+.s0_btn i{box-shadow:0 0 12px 6px rgba(182,211,228,.73);border-radius:3px;position:absolute;left:0;top:0;line-height:5px;height:6px;width:6px;display:none;background-color:rgba(186,207,220,.73)}
+@-webkit-keyframes sBtn{0%{left:0;top:0}
+40%{left:412px;top:0}50%{left:412px;top:78px}90%{left:0;top:78px}100%{left:0;top:0}}
+@keyframes sBtn{0%{left:0;top:0}40%{left:412px;top:0}50%{left:412px;top:78px}90%{left:0;top:78px}100%{left:0;top:0}}
+.s0_text{width:500px;margin-left:-250px;text-align:center;margin-top:90px;font-size:22px;color:#8d939e}
+.s0_text em{color:#55bc61}
+.s0_tip{width:300px;text-align:center;margin-left:-150px;height:40px;top:143%;font-size:22px;color:#d6d8db}
+.screen1{background-color:#8b77f9}
+.s_name_t{top:-8%}
+.s1_name{background-position:-394px -38px;width:297px;height:56px;margin-left:-148px}
+.s1_name1{background-position:-406px -118px;width:269px;height:29px;margin-left:-134px;margin-top:80px}
+.s1_img{background-position:-862px -627px;width:545px;height:504px;margin-left:-272px;top:75%;margin-top:-250px}
+.screen2{background-color:#36c8ba}
+.s2_name{background-position:-395px -238px;width:354px;height:57px;margin-left:-177px}
+.s2_name1{background-position:-437px -319px;width:269px;height:29px;margin-left:-134px;margin-top:80px}
+.s2_img{background-position:-54px -627px;width:467px;height:496px;margin-left:-233px;top:75%;margin-top:-248px}
+.screen3{background-color:#55bc61}
+.s3_name{background-position:-383px -426px;width:296px;height:57px;margin-left:-148px}
+.s3_name1{background-position:-397px -507px;width:268px;height:29px;margin-left:-134px;margin-top:80px}
+.s3_img{background-position:-980px -70px;width:481px;height:503px;margin-left:-240px;top:70%;margin-top:-251px}
+.s3_btn{top:125%}
+.s3_btn a{color:#fff;border-color:#fff}
+.s3_btn a:active{background-color:#fff;color:#55bc61}
+.weixin-tip{background:#3c4045 url(img/weixin_tip.jpg) no-repeat center 0;position:absolute;left:0;top:-100%;width:100%;height:100%;background-size:contain;overflow:hidden;opacity:0;transition:all .3s ease-out;-webkit-transition:all .3s ease}
+.weixin-tip-show{opacity:1;top:0;transition:all .3s ease;-webkit-transition:all .3s ease}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="screen-wrap" id="js-screen-wrap">
+			<div class="screen screen0">
+				<div class="wrap-div-blk">
+					<div class="s0_logo sprite"></div>
+					<div class="s0_name sprite"></div>
+					<div class="s0_btn">
+						<a href="javascript:;">立即下载</a>
+						<i></i>
+					</div>
+					<div class="s0_text">支持<em>ios6.0</em>及安卓2.3以上手机系统</div>
+					<div class="s0_tip">上滑查看介绍</div>
+				</div>
+			</div>
+			<div class="screen screen1">
+				<div class="wrap-div-blk">
+					<div class="s1_name sprite s_name_t"></div>
+					<div class="s1_name1 sprite s_name_t"></div>
+					<div class="s1_img sprite"></div>
+				</div>
+			</div>
+			<div class="screen screen2">
+				<div class="wrap-div-blk">
+					<div class="s2_name sprite s_name_t"></div>
+					<div class="s2_name1 sprite s_name_t"></div>
+					<div class="s2_img sprite"></div>
+				</div>
+			</div>
+			<div class="screen screen3">
+				<div class="wrap-div-blk">
+					<div class="s3_name sprite s_name_t"></div>
+					<div class="s3_name1 sprite s_name_t"></div>
+					<div class="s3_img sprite"></div>
+					<div class="s0_btn s3_btn">
+						<a href="javascript:;">立即下载</a>
+						<i></i>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="arrows-tip-blk" id="js-arrows-tip"><div class="arrows-tip sprite"></div></div>
+		<div class="weixin-tip" id="js-weixin-tip">			
+		</div>
+	</div>
+	<script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>
